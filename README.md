@@ -6,7 +6,7 @@
 基础依赖：
 
 1. [freeswitch 1.10](https://github.com/PerkinsZhu/freeswitch.git)
-2. [jssip-3.8.0.js](https://jssip.net/download/releases/jssip-3.8.0.js)
+2. [sip.js](https://github.com/onsip/SIP.js.git)
 
 功能模块:
 
