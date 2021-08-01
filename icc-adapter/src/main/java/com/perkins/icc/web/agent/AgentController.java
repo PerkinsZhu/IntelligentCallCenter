@@ -16,11 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AgentController {
 
-    @Autowired
-    private AgentServiceI agentService;
+//    @Autowired
+//    private AgentServiceI agentService;
 
     @PostMapping(value = "/addAgent")
     public Response addAgent(@RequestBody CustomerAddCmd customerAddCmd) {
-        return agentService.addAgent(customerAddCmd);
+//        return agentService.addAgent(customerAddCmd);
+        return null;
     }
 }

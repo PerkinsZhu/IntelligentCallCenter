@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="Generator" content="EditPlus®">
+        <meta name="Author" content="">
+        <meta name="Keywords" content="">
+        <meta name="Description" content="">
+
+		<link rel="stylesheet" href="assets/css/ukefu.css">
+
+		<script src="assets/js/jquery-1.10.2.min.js"></script>
+		<script src="assets/js/layer/layer.js"></script>
+        <script src="assets/js/jssip-3.7.11.js"></script>
+		<script src="assets/js/UKeFu-SoftPhone-3.7.11.js"></script>
+		<title>UCKeFu-SoftPhone-3.7.11（软电话工具条）</title>
+    </head>
+    
+    <body style="margin:0px;">
+        <div class="header header-ukefu">
+			<div class="ukefu-softphone-head">
+				<a class="logo" href="/"><img src="assets/images/logo.png"></a>
+				<div class="ukefu-softphone">
+					<div class="softphone-stream" style="display:none;">
+						<audio  id="remoteAudio"></audio >
+						<audio  id="localAudio" muted="muted"></audio>
+					</div>
+					<div class="status disabled">
+						<div class="text" id="caller">主叫号码：<span class="number"></span></div>
+						<div class="text" id="called">被叫号码：<span class="number">9664</span></div>
+					</div>
+					<div class="soft-function disabled" id="softphone-status">
+						<div class="soft-function ready" data-toggle="soft-function" data-action="ready">
+							<div class="icon"><i class="kfont">&#xe602;</i></div>
+							<div class="text">就绪</div>
+						</div>
+						<div class="soft-function notready" style="display:none;" data-toggle="soft-function" data-action="notready">
+							<div class="icon"><i class="kfont">&#xe689;</i></div>
+							<div class="text">未就绪</div>
+						</div>
+					</div>
+					<div class="soft-function disabled" id="softphone-answer" data-toggle="soft-function" data-action="answer">
+						<div class="icon"><i class="kfont">&#xe698;</i></div>
+						<div class="text">接听</div>
+					</div>
+					<div class="soft-function disabled" id="softphone-hungup" data-toggle="soft-function" data-action="hungup">
+						<div class="icon"><i class="kfont">&#xe60e;</i></div>
+						<div class="text">挂断</div>
+					</div>
+					
+					<div class="soft-function disabled diafunction" id="softphone-makecall">
+						<div class="icon"><i class="kfont">&#xe670;</i></div>
+						<div class="text">拨打</div>
+						<div class="dialpad" id="dialpad">
+							<div class="dialnum">
+								<input class="dialpad-input" type="text" id="dialpad-input" value="">
+								<i class="kfont">&#xe675;</i>
+							</div>
+							<button class="number" id="1">1</button>
+							<button class="number" id="2">2</button>
+							<button class="number" id="3">3</button>
+							<button class="number" id="4">4</button>
+							<button class="number" id="5">5</button>
+							<button class="number" id="6">6</button>
+							<button class="number" id="7">7</button>
+							<button class="number" id="8">8</button>
+							<button class="number" id="9">9</button>
+							<button class="number" id="*">*</button>
+
+							<button class="number" id="0">0</button>
+							<button class="number" id="#">#</button>
+
+							<button id="makecall" class="call"><i class="kfont">&#xe61f;</i></button>
+						</div>
+					</div>
+					<div class="soft-function disabled" id="softphone-status">
+						<div class="soft-function hold" data-toggle="soft-function" data-action="hold">
+							<div class="icon"><i class="kfont">&#xe647;</i></div>
+							<div class="text">保持</div>
+						</div>
+						<div class="soft-function unhold" data-toggle="soft-function" data-action="unhold" style="display:none;">
+							<div class="icon"><i class="kfont">&#xe605;</i></div>
+							<div class="text">取回</div>
+						</div>
+					</div>
+					<div class="soft-function disabled" id="softphone-trans" data-toggle="soft-function" data-action="trans">
+						<div class="icon"><i class="kfont">&#xe663;</i></div>
+						<div class="text">转接</div>
+					</div>
+					<div class="soft-function" id="ukefu_account">
+						<div class="soft-function login" data-toggle="soft-function" data-action="login">
+							<div class="icon"><i class="kfont">&#xe61f;</i></div>
+							<div class="text">登陆</div>
+						</div>
+						<div class="soft-function logout" style="display:none;" data-toggle="soft-function" data-action="logout">
+							<div class="icon"><i class="kfont">&#xe606;</i></div>
+							<div class="text">登出</div>
+						</div>
+					</div>
+					<script id="ukefu-login-html" type="text/html">
+						<div class="ukefu-login-title">请输入登陆信息</div>
+						<div class="ukefu-login-info">
+							<div class="ukefu-login-extno">分机号：</div>
+							<div class="ukefu-login-block">
+								<input class="ukefu-login-input" type="text" id="extno" value="">
+							</div>
+						</div>
+						<div class="ukefu-login-info">
+							<div class="ukefu-login-password">密码：</div>
+							<div class="ukefu-login-block">
+								<input class="ukefu-login-input" type="password" id="extpass" type="text" value="">
+							</div>	
+						</div>
+					</script>
+					
+				</div>
+			</div>
+		</div>		
+    </body>
+
+</html>
+
+</html>

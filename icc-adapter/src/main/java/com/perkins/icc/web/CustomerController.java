@@ -7,17 +7,24 @@ import com.perkins.icc.dto.CustomerAddCmd;
 import com.perkins.icc.dto.CustomerListByNameQry;
 import com.perkins.icc.dto.data.CustomerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 public class CustomerController {
 
     @Autowired
     private CustomerServiceI customerService;
 
+    @ResponseBody
     @GetMapping(value = "/helloworld")
     public String helloWorld(){
         return "Hello, welcome to COLA world!";
+    }
+
+    @GetMapping(value = "/index")
+    public String index(){
+        return "index";
     }
 
     @GetMapping(value = "/customer")

@@ -1,0 +1,234 @@
+
+@font-face {font-family: "kfont";
+  src: url('kfont/iconfont.eot?t=1492558318555'); /* IE9*/
+  src: url('kfont/iconfont.eot?t=1492558318555#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('kfont/iconfont.woff?t=1492558318555') format('woff'), /* chrome, firefox */
+  url('kfont/iconfont.ttf?t=1492558318555') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('kfont/iconfont.svg?t=1492558318555#kfont') format('svg'); /* iOS 4.1- */
+}
+
+.kfont {
+  font-family:"kfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-phone:before { content: "\e637"; }
+
+.icon-delete:before { content: "\e675"; }
+
+.icon-phone1:before { content: "\e64a"; }
+
+.icon-loginiconphone:before { content: "\e61f"; }
+
+.icon-phone2:before { content: "\e629"; }
+
+.icon-logout:before { content: "\e606"; }
+
+.icon-yiguanzhu:before { content: "\e602"; }
+
+.icon-phone3:before { content: "\e695"; }
+
+.icon-phone4:before { content: "\e647"; }
+
+.icon-callin:before { content: "\e605"; }
+
+.icon-30offlineoval:before { content: "\e689"; }
+
+.icon-14guaduan-1:before { content: "\e67e"; }
+
+.icon-call_transfer:before { content: "\e663"; }
+
+.icon-hang-up:before { content: "\e60e"; }
+
+.icon-zaixianjieda:before { content: "\e698"; }
+
+.icon-Call:before { content: "\e670"; }
+
+
+.ukefu-softphone * {
+    font: 14px \5FAE\8F6F\96C5\9ED1,Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif;
+}
+.ukefu-softphone *{
+	outline:none;
+}
+
+.header-index{background-color: #080018; border: none;}
+
+.layui-layout-admin .header-ukefu{border-bottom-color: #009688; background-image: -webkit-linear-gradient(right,#00c89d 0,#1E90FF 100%);}
+.layui-layout-admin .layui-header {
+    border-bottom: 0px solid #1AA094;
+}
+.header-ukefu{height: 50px; border-bottom: 0px solid #404553;  background-color: #1E90FF;; color: #fff;font-weight:200;}
+
+.header-ukefu .logo{left: 0px;}
+.header-ukefu .layui-nav{top: 0;}
+.header-ukefu .layui-nav .layui-nav-item{margin: 0 10px; line-height: 48px;}
+.header-ukefu .layui-nav .layui-nav-item a{color: #ffffff;}
+.header-ukefu .layui-nav .layui-this{background-color:#1E90FF;}
+.header-ukefu .layui-nav .layui-nav-item a:hover, 
+.header-ukefu .layui-nav .layui-this a{color: #fff;}
+.header-ukefu .layui-nav .layui-this:after, 
+.header-ukefu .layui-nav-bar{background-color: #008d4c;}
+.header-ukefu .layui-nav .layui-this a{padding: 0 10px;}
+.header-ukefu .layui-nav{
+	position: relative;
+	float:right;
+}
+
+
+.logo{position: absolute; left: 0; top: 10px;font-size:20px;color:#FFFFFF;}
+.logo img{height: 34px;}
+
+
+.ukefu-softphone{
+	position: absolute;
+    top: 0px;
+    height: 50px;
+    left: 150px;
+    background-color: rgba(0,0,0,.15);
+    border-radius: 50px;
+    width: 590px;
+    padding: 0px 5px 0px 20px;
+}
+.ukefu-softphone{
+	-moz-user-select: none; /*»ðºü*/
+	-webkit-user-select: none; /*webkitä¯ÀÀÆ÷*/
+	-ms-user-select: none; /*IE10*/
+	-khtml-user-select: none; /*ÔçÆÚä¯ÀÀÆ÷*/
+	user-select: none;
+}
+.ukefu-softphone .soft-function{
+	width:50px;
+	height:46px;
+	text-align:center;
+	border-radius: 3px;
+	margin:2px 3px 2px 3px;
+	float:left;
+	cursor: pointer;
+}
+.ukefu-softphone .soft-function:hover{
+	background-color: rgba(0,0,0,.10);
+}
+.ukefu-softphone .soft-function.disabled{
+	cursor:not-allowed;
+	color:#acacac !important;
+}
+.ukefu-softphone .soft-function .icon{
+	height:27px;
+	line-height:30px;
+}
+.ukefu-softphone .soft-function .icon i{
+	font-size:25px;
+}
+.ukefu-softphone .soft-function .text{
+	font-size:14px;
+}
+
+.ukefu-softphone .status{
+	width:180px;
+	height:44px;
+	border-radius: 3px;
+	padding:5px 5px 3px 5px;
+	float:left;
+}
+.ukefu-softphone .status:hover{
+	background-color: rgba(0,0,0,.10);
+}
+
+.ukefu-softphone .status .text{
+	line-height:22px;
+}
+
+.ukefu-softphone .status.disabled{
+	cursor:not-allowed;
+	color:#acacac !important;
+}
+.ukefu-login-title{
+	text-align:left;
+	height:40px;
+	font-size:15px;
+}
+.ukefu-login-info{
+	width:260px;
+	text-align:left;
+	height:50px;
+	font-size:15px;
+	line-height:30px;
+}
+.ukefu-login-info .ukefu-login-extno{
+	width:90px;
+	text-align:right;
+    float: left;
+
+}
+.ukefu-login-info .ukefu-login-password{
+	width:90px;
+	text-align:right;
+    float: left;
+}
+.ukefu-login-block{
+	margin-left: 90px;
+    min-height: 36px;
+}
+.ukefu-login-input{
+	height: 30px;
+    line-height: 30px;
+	display: block;
+    width: 100%;
+    padding-left: 10px;
+    border: 1px solid #e6e6e6;
+    background-color: #fff;
+    border-radius: 2px;
+}
+.ukefu-softphone .dialpad{
+	width: 220px;
+    height: 275px;
+    border: 1px solid #dedede;
+	border-bottom: 0px solid #404553;
+    background-color: #1E90FF;
+	padding-top:5px;
+	margin-top:2px;
+	border-radius: 3px;
+	display:none;
+}
+
+.ukefu-softphone .dialpad button{
+	border-radius: 100%;
+    border: 1px solid #000000;
+    width: 40px;
+    height: 40px;
+	margin:4px 10px 4px 10px;
+	background-color:#fff;
+	cursor: pointer;
+}
+.ukefu-softphone .dialpad .dialpad-input{
+    height: 30px;
+    line-height: 30px;
+    display: block;
+    width: 170px;
+    padding-left: 10px;
+	padding-right:10px;
+    border: 0px solid #1E90FF;
+    background-color: #1E90FF;
+	color:#FFF;
+    border-radius: 2px;
+}
+.ukefu-softphone .dialpad .call{
+	background-color:#FFF;
+	border: 1px solid #FFFFFF;
+}
+.ukefu-softphone .dialpad .call i{
+	font-size:25px;
+	color:#1E90FF;
+}
+.ukefu-softphone .dialpad .dialnum{
+	position: relative;
+}
+.ukefu-softphone .dialpad .dialnum i{
+	position: absolute;
+    right: 10px;
+    top: 2px;
+    font-size: 25px;
+}

@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 public class AgentServiceImpl implements AgentServiceI {
     @Override
     public Response addAgent(CustomerAddCmd customerAddCmd) {
+        //TODO 在业务库中新增agent信息
+        //TODO 在freeswitch中新增agent配置
         return null;
     }
 }
