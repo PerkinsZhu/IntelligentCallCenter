@@ -1,6 +1,6 @@
-var ws_address = "127.0.0.1" , ws_port = "5066" ;
+var ws_address = "127.0.0.1" , ws_port = "5066" , fs_domain="aaa.com";
 $(document).ready(function(){
-	
+
 	$(document).on("click" , '[data-toggle="soft-function"]' , function(e){
 		if($(this).closest(".disabled").length == 0){
 			var name = $(this).data("action");
@@ -21,7 +21,7 @@ $(document).ready(function(){
 			}else if(name == "unhold"){
 				uKeFuSoftPhone.unhold();
 			}
-		}		
+		}
 	});
 	var ondial = false ;
 	$('#softphone-makecall').click(function(){
@@ -84,7 +84,7 @@ var uKeFuSoftPhone = {
 		  ,btn: ['登陆', '关闭']
 		  ,yes: function(index){
 			var extno = $("#extno").val();
-			var extpass = $("#extpass").val();	
+			var extpass = $("#extpass").val();
 			layer.close(index);
 			if(extno!='' && extpass != ''){
 				uKeFuSoftPhone.login(extno , extpass);
@@ -95,7 +95,7 @@ var uKeFuSoftPhone = {
 	},
 	login(extno , extpass){
 		var config = {
-			uri: extno+'@'+ws_address,
+			uri: extno+'@'+fs_domain,
 			wsServers: 'ws://'+ws_address+':'+ws_port,
 			authorizationUser: extno,
 			password: extpass,
