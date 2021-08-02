@@ -7,6 +7,7 @@
 
 1. [freeswitch 1.10](https://github.com/PerkinsZhu/freeswitch.git)
 2. [sip.js](https://github.com/onsip/SIP.js.git)
+3. [uckefu-softphone](https://gitee.com/perkins_zhu/uckefu-softphone)
 
 功能模块:
 
