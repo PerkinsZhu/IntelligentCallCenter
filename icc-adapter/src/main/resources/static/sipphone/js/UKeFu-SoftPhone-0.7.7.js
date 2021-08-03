@@ -1,4 +1,6 @@
-var ws_address = "127.0.0.1" , ws_port = "5066" , fs_domain="aaa.com";
+var ws_address = "172.20.113.213" , ws_port = "5066" , fs_domain="aaa.com";
+//ws_address 如果不是localhost 和 127.0.0.1的话，需要走 wss才可以连通
+// fs_domain 是fs为了支持多租户配置的domain
 $(document).ready(function(){
 
 	$(document).on("click" , '[data-toggle="soft-function"]' , function(e){
@@ -37,6 +39,7 @@ $(document).ready(function(){
 		$("#dialpad-input").val($("#dialpad-input").val() + $(this).attr("id"));
 	});
 	$("#makecall").on("click" , function(){
+		//这里可以验证手机号是否正确
 		/*if(new RegExp(/^(0\d{2,3}-{0,1}\d{5,8}(-{0,1}\d{3,5}){0,1})|(((13[0-9])|(15([0-3]|[5-9]))|(18[0,5-9]))\d{8})|(1[0-9]{3})$/).test($('#dialpad-input').val())){
 			uKeFuSoftPhone.invite($('#dialpad-input').val());
 			$('#dialpad-input').val("") ;

@@ -1,7 +1,7 @@
 项目部署:
     1、根目录下执行 mvn install
     2、cd start
-    3、mvn spring-boot:run
+    3、mvn spring-boot:run(可以直接使用JRebel运行)
     4、测试: http://127.0.0.1:9091/index
 
 
@@ -13,3 +13,7 @@
 说明:
     sip-0.7.7.js和sip-0.20.0.js 是onsip的框架
     jssip-3.7.11.js 是 jssip的框架
+
+待处理问题：
+    引入redission
+    引入Drools

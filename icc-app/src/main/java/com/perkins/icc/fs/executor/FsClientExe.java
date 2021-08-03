@@ -1,6 +1,7 @@
 package com.perkins.icc.fs.executor;
 
 import com.alibaba.cola.dto.Response;
+import com.alibaba.cola.dto.SingleResponse;
 import com.alibaba.cola.exception.BizException;
 import com.perkins.icc.dto.data.ErrorCode;
 import com.perkins.icc.dto.fs.FsCallCmd;
@@ -22,16 +23,31 @@ public class FsClientExe {
     @Autowired
     private Client fsClient;
 
-    public Response execute(FsCallCmd dto) {
-        log.info("execute fs cmd:{}", dto);
-        //The flow of usecase is defined here.
-        //The core ablility should be implemented in Domain. or sink to Domian gradually
-        int code = 1;
-        EslMessage response = fsClient.sendSyncApiCommand("originate", "user/1009 &bridge(sofia/gateway/callcenter_gw/1066)");
+    public Response simpleCall(FsCallCmd dto) {
+        log.info("execute fs cmd:{} {}", dto);
+        EslMessage response = fsClient.sendSyncApiCommand(dto.getCommand(), dto.getArgs());
         log.info("response:{}", response.getBodyLines());
-        if (code != 1) {
-            throw new BizException(ErrorCode.B_CUSTOMER_companyNameConflict.getErrCode(), "fs 执行失败");
-        }
-        return Response.buildSuccess();
+        //呼叫成功返回 uuid ,呼叫失败则返回原因
+        return getResponse(response);
     }
+
+
+    private SingleResponse<String> getResponse(EslMessage response) {
+        if (response == null || response.getBodyLines().isEmpty()) {
+            return SingleResponse.buildFailure("500", "外呼操失败");
+        }
+        String res = response.getBodyLines().get(0);
+        if (res.startsWith("+OK")) {
+            return SingleResponse.of(res.substring(3));
+        }
+        return SingleResponse.buildFailure("500", res);
+    }
+
+    public SingleResponse<String> callOut(FsCallCmd dto) {
+        log.info("execute fs cmd:{}", dto);
+        EslMessage response = fsClient.sendSyncApiCommand(dto.getCommand(), dto.getArgs());
+        log.info("response:{}", response.getBodyLines());
+        return getResponse(response);
+    }
+
 }

@@ -38,5 +38,12 @@
             <artifactId>org.freeswitch.esl.client</artifactId>
             <version>0.9.2</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.16.1</version>
+        </dependency>
+
     </dependencies>
 </project>
