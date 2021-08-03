@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.perkins.icc.datatunnel.CustomerTunnelI">
-    <select id="findByCriteria" resultType="com.perkins.icc.database.dataobject.CustomerDO" resultMap="customerMap">
+<mapper namespace="com.perkins.icc.customer.mapper.CustomerMapper">
+    <select id="getById" resultType="com.perkins.icc.customer.CustomerDO">
         select * from customer where customer_id = #{id}
     </select>
-    <resultMap type="com.perkins.icc.database.dataobject.CustomerDO" id="customerMap">
+    <resultMap type="com.perkins.icc.customer.CustomerDO" id="customerMap">
          <result property="customerId" column="emp_no"/>
          <result property="memberId" column="salary"/>
          <result property="globalId" column="from_date"/>

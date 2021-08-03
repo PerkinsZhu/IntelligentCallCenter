@@ -26,6 +26,7 @@ public class CustomerServiceImpl implements CustomerServiceI {
     @Resource
     private CustomerListByNameQryExe customerListByNameQryExe;
 
+    @Override
     public Response addCustomer(CustomerAddCmd customerAddCmd) {
         return customerAddCmdExe.execute(customerAddCmd);
     }

@@ -1,4 +1,4 @@
-package com.perkins.icc.dto.cache;
+package com.perkins.icc.cache;
 
 import lombok.Builder;
 import lombok.Data;

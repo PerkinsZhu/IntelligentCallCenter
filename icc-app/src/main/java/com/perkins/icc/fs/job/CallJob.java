@@ -1,10 +1,9 @@
 package com.perkins.icc.fs.job;
 
-import com.perkins.icc.agent.TransferServiceImpl;
-import com.perkins.icc.cache.executor.CacheExe;
+import com.perkins.icc.cache.CacheService;
+import com.perkins.icc.domain.call.TransferToAgent;
 import com.perkins.icc.domain.common.Constant;
-import com.perkins.icc.dto.cache.RedisCmd;
-import com.perkins.icc.fs.executor.FsClientExe;
+import com.perkins.icc.cache.RedisCmd;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -32,15 +30,11 @@ import java.util.concurrent.Executors;
 @Slf4j
 @ConditionalOnExpression("${job.enabled:true}")
 public class CallJob implements ApplicationRunner {
-
     private ExecutorService tenantSPool = Executors.newFixedThreadPool(100);
-
     @Autowired
-    private CacheExe cacheExe;
-
+    private CacheService cacheService;
     @Autowired
-    private TransferServiceImpl transferService;
-
+    private TransferToAgent transferToAgent;
     @Override
     public void run(ApplicationArguments args) throws Exception {
         //这里要考虑到租户的概念，每个租户都应该有一个where消费者
@@ -76,7 +70,7 @@ public class CallJob implements ApplicationRunner {
                     callList.stream().forEach(uuid -> {
                         //把外呼电话转接给空闲坐席
                         tenantSPool.execute(() -> {
-                            transferService.bridgeTo(uuid.toString());
+                            transferToAgent.transfer(uuid.toString());
                         });
                     });
                 }
@@ -91,7 +85,7 @@ public class CallJob implements ApplicationRunner {
                 .key(Constant.r_call_queue_key)
                 .limit(count)
                 .build();
-        List list = cacheExe.getQueue(cmd);
+        List list = cacheService.getQueue(cmd);
         return list;
     }
 

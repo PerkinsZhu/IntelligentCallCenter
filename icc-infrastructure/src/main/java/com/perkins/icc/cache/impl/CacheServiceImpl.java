@@ -1,25 +1,25 @@
-package com.perkins.icc.cache.executor;
+package com.perkins.icc.cache.impl;
 
 import com.alibaba.cola.dto.Response;
-import com.perkins.icc.dto.cache.RedisCmd;
+import com.perkins.icc.cache.CacheService;
+import com.perkins.icc.cache.RedisCmd;
 import org.redisson.api.RQueue;
 import org.redisson.api.RedissonClient;
-import org.redisson.client.codec.Codec;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.codec.TypedJsonJacksonCodec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * @author: perkins Zhu
- * @date: 2021/8/3 12:19
+ * @date: 2021/8/3 23:18
  * @description:
  **/
-@Component
-public class CacheExe {
+@Service
+public class CacheServiceImpl implements CacheService {
 
     @Value("${spring.redis.namespace:}")
     private String namespace;
@@ -28,12 +28,14 @@ public class CacheExe {
     @Autowired
     private RedissonClient redissonClient;
 
+    @Override
     public Response execute(RedisCmd cmd) {
         boolean success = redissonClient.getQueue(getKey(cmd.getKey()), TypedJsonJacksonCodec.INSTANCE).add(cmd.getValue());
         return success ? Response.buildSuccess() : Response.buildFailure("500", "保存redis队列异常.key:" + cmd.getKey());
     }
 
 
+    @Override
     public <T> List<T> getQueue(RedisCmd cmd) {
         RQueue<T> rQueue = redissonClient.getQueue(getKey(cmd.getKey()), JsonJacksonCodec.INSTANCE);
         return rQueue.poll(cmd.getLimit());

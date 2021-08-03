@@ -1,18 +1,15 @@
 package com.perkins.icc.fs.listener;
 
 import com.alibaba.cola.dto.Response;
-import com.alibaba.cola.dto.SingleResponse;
-import com.perkins.icc.cache.executor.CacheExe;
+import com.perkins.icc.cache.CacheService;
 import com.perkins.icc.domain.common.Constant;
 import com.perkins.icc.domain.event.FsEventType;
-import com.perkins.icc.dto.cache.RedisCmd;
+import com.perkins.icc.cache.RedisCmd;
 import lombok.extern.slf4j.Slf4j;
 import org.freeswitch.esl.client.IEslEventListener;
 import org.freeswitch.esl.client.transport.event.EslEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @author: perkins Zhu
@@ -24,7 +21,7 @@ import java.util.List;
 public class InBoundListener implements IEslEventListener {
 
     @Autowired
-    private CacheExe cacheExe;
+    private CacheService cacheService;
 
     @Override
     public void eventReceived(EslEvent eslEvent) {
@@ -54,7 +51,7 @@ public class InBoundListener implements IEslEventListener {
                     .key(Constant.r_call_queue_key)
                     .value(uuid)
                     .build();
-            Response response = cacheExe.execute(cmd);
+            Response response = cacheService.execute(cmd);
             if (!response.isSuccess()) {
                 log.error(response.getErrMessage());
             }

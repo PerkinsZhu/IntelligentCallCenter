@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Frank Zhang
  */
 @SpringBootApplication(scanBasePackages = {"com.perkins.icc","com.alibaba.cola"})
-@MapperScan("com.perkins.icc.repository")
+@MapperScan("com.perkins.icc.*.mapper")
 public class Application {
 
     public static void main(String[] args) {
