@@ -1,9 +1,9 @@
 package com.perkins.icc.fs.job;
 
-import com.perkins.icc.cache.CacheService;
+import com.perkins.icc.domain.cache.CacheService;
 import com.perkins.icc.domain.call.TransferToAgent;
 import com.perkins.icc.domain.common.Constant;
-import com.perkins.icc.cache.RedisCmd;
+import com.perkins.icc.domain.cache.RedisCmd;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +35,7 @@ public class CallJob implements ApplicationRunner {
     private CacheService cacheService;
     @Autowired
     private TransferToAgent transferToAgent;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         //这里要考虑到租户的概念，每个租户都应该有一个where消费者
@@ -69,6 +70,7 @@ public class CallJob implements ApplicationRunner {
                     List callList = getCallList(availableSeatCount - 2);
                     callList.stream().forEach(uuid -> {
                         //把外呼电话转接给空闲坐席
+                        //TODO 这里有个问题就是最大可同时外呼数量受线程池数量限制
                         tenantSPool.execute(() -> {
                             transferToAgent.transfer(uuid.toString());
                         });

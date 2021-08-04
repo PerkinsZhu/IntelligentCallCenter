@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule">
+    <!-- packages 指向规则文件目录 -->
+    <kbase name="hello" packages="rules">
+        <!-- name在 创建 KIEsession 会用到 -->
+        <ksession name="helloworld"/>
+    </kbase>
+    <!--
+        &lt;!&ndash; packages 指向规则文件目录   &ndash;&gt;
+        <kbase name="helloUpgraded" packages="rules">
+            <ksession name="helloworldUpgraded"/>
+        </kbase>
+
+        &lt;!&ndash; packages 指向规则文件目录   &ndash;&gt;
+        <kbase name="dinpay" packages="rule2">
+            <ksession name="dinpayRule"/>
+        </kbase>
+
+        <kbase name="rules" packages="rules">
+            <ksession name="helloworld"/>
+        </kbase>-->
+</kmodule>

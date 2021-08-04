@@ -7,5 +7,7 @@ package com.perkins.icc.domain.common;
  **/
 public class Constant {
     //外呼等待队列
-    public final static String r_call_queue_key = "call_queue_key";
+    public final static String r_call_queue_key = "queue:waiting_call";
+    //空闲坐席队列
+    public final static String r_available_agent_queue_key = "queue:available_agent";
 }

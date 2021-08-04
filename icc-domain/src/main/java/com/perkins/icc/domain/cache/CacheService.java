@@ -1,6 +1,7 @@
-package com.perkins.icc.cache;
+package com.perkins.icc.domain.cache;
 
 import com.alibaba.cola.dto.Response;
+import com.perkins.icc.domain.cache.RedisCmd;
 
 import java.util.List;
 
@@ -11,5 +12,8 @@ import java.util.List;
  **/
 public interface CacheService {
     public Response execute(RedisCmd cmd);
+
     public <T> List<T> getQueue(RedisCmd cmd);
+
+    public <T> T getSortedSet(RedisCmd cmd);
 }

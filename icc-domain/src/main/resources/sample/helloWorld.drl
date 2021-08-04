@@ -1,0 +1,19 @@
+package sample
+import com.perkins.icc.domain.DroolTest.Message;
+
+rule "helloWorld"
+    when
+    m : Message( status == Message.HELLO, myMessage : message )
+    then
+     System.out.println( myMessage );
+            m.setMessage( "Goodbye  world" );
+            m.setStatus( Message.GOODBYE );
+            update( m );
+end
+
+rule "GoodBye"
+    when
+        Message( status == Message.GOODBYE, myMessage : message)
+    then
+        System.out.println(myMessage);
+end

@@ -1,0 +1,18 @@
+rule helloWorld2
+    salience 100
+    lock-on-active true
+    when
+        eval(true)
+    then
+      System.out.println("Helloworld drools2!  ");
+end
+
+rule helloWorld1
+    salience 100
+    lock-on-active true
+    when
+        eval(true)
+    then
+
+      System.out.println("Helloworld drools1!  ");
+end

@@ -1,4 +1,4 @@
-package com.perkins.icc.cache;
+package com.perkins.icc.domain.cache;
 
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +17,5 @@ public class RedisCmd<T> {
     private T value;
     private Long expire;
     private Integer limit;
+    private boolean isPop;
 }

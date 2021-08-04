@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * @author: perkins Zhu
  * @date: 2021/8/3 22:55
@@ -38,8 +40,14 @@ public class TransferToAgentImpl implements TransferToAgent {
          * 阻塞等待坐席接通会导致每个坐席就耗费一个线程
          */
 
-        Agent agent = agentService.findNextAgent();
-        SingleResponse rs = fsService.callOut(agent.getNo());
+        Optional<Agent> agent = agentService.findNextAgent();
+        if (!agent.isPresent()) {
+            log.warn("没有可用空闲坐席");
+            //按照呼损处理
+            return Response.buildFailure("500", "无可用空闲坐席");
+        }
+        //如果获取到agent，客户断掉了，此时应该重新把该agent放回等待队列
+        SingleResponse rs = fsService.callOut(agent.get().getNo());
         String b_leg_uuid = rs.getData().toString();
         SingleResponse bridge = fsService.uuidBridge(a_leg_uuid, b_leg_uuid);
         return null;

@@ -1,9 +1,10 @@
 package com.perkins.icc.cache.impl;
 
 import com.alibaba.cola.dto.Response;
-import com.perkins.icc.cache.CacheService;
-import com.perkins.icc.cache.RedisCmd;
+import com.perkins.icc.domain.cache.CacheService;
+import com.perkins.icc.domain.cache.RedisCmd;
 import org.redisson.api.RQueue;
+import org.redisson.api.RSortedSet;
 import org.redisson.api.RedissonClient;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.codec.TypedJsonJacksonCodec;
@@ -39,6 +40,13 @@ public class CacheServiceImpl implements CacheService {
     public <T> List<T> getQueue(RedisCmd cmd) {
         RQueue<T> rQueue = redissonClient.getQueue(getKey(cmd.getKey()), JsonJacksonCodec.INSTANCE);
         return rQueue.poll(cmd.getLimit());
+    }
+
+
+    @Override
+    public <T> T getSortedSet(RedisCmd cmd) {
+        RSortedSet<T> sortedSet = redissonClient.getSortedSet(getKey(cmd.getKey()), JsonJacksonCodec.INSTANCE);
+        return sortedSet.first();
     }
 
     private String getKey(String key) {
