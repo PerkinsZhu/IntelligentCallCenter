@@ -1,4 +1,4 @@
-var ws_address = "172.20.113.213" , ws_port = "5066" , fs_domain="aaa.com";
+var ws_address = "127.0.0.1" , ws_port = "5066" , fs_domain="aaa.com";
 //ws_address 如果不是localhost 和 127.0.0.1的话，需要走 wss才可以连通
 // fs_domain 是fs为了支持多租户配置的domain
 $(document).ready(function(){
