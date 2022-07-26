@@ -25,6 +25,7 @@ public class InBoundListener implements IEslEventListener {
 
     @Override
     public void eventReceived(EslEvent eslEvent) {
+        //接受阻塞类事件
         log.info("Event received [{}]", eslEvent);
     }
 
