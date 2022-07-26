@@ -32,6 +32,7 @@ public class SeatServiceImpl implements SeatServiceI {
         FsCallCmd innerCmd = FsCallCmd.builder()
                 .command("bgapi originate")
                 .args("user/1010 &park")
+//                .args("user/76014 &park")
                 .build();
         SingleResponse innerResponse = fsService.callOut(innerCmd);
         log.info("uuid:{}", innerResponse.getData());

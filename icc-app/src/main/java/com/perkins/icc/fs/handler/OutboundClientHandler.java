@@ -10,6 +10,7 @@ import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.springframework.stereotype.Component;
 
+
 /**
  * @author: perkins Zhu
  * @date: 2022/7/26 15:08
@@ -22,20 +23,25 @@ public class OutboundClientHandler extends AbstractOutboundClientHandler {
     @Override
     protected void handleConnectResponse(ChannelHandlerContext channelHandlerContext, EslEvent event) {
         log.info("Received connect response [{}]", event);
-        if (event.getEventName().equalsIgnoreCase("CHANNEL_DATA")) {
-            log.info("=======================  incoming channel data  =============================");
-            log.info("Event-Date-Local: [{}]", event.getEventDateLocal());
-            log.info("Unique-ID: [{}]", event.getEventHeaders().get("Unique-ID"));
-            log.info("Channel-ANI: [{}]", event.getEventHeaders().get("Channel-ANI"));
-            log.info("Answer-State: [{}]", event.getEventHeaders().get("Answer-State"));
-            log.info("Caller-Destination-Number: [{}]", event.getEventHeaders().get("Caller-Destination-Number"));
-            log.info("=======================  = = = = = = = = = = =  =============================");
-        } else {
-            throw new IllegalStateException("Unexpected event after connect: [" + event.getEventName() + ']');
-        }
-        //TODO 在这里对 channel进行各种处理
-        //转接.挂断.播放音乐/视频
+        printHeader(event);
 
+        /**
+         * <extension name="outBoundTest">
+         *   <condition field="destination_number" expression="76014">
+         *     <action application="set" data="taskType=playMusic"/>
+         *     <action application="socket" data="serverIp:port async full"/>
+         *   </condition>
+         * </extension>
+         * 这里从事件中取出自定义参数: taskType，然后更加参数类型，进行不同的操作：
+         * 转接.挂断.播放音乐/视频
+         */
+        String taskType = event.getEventHeaders().getOrDefault("variable_taskType", "");
+        switch (taskType) {
+            case "playMusic":
+                log.info("todo 播放音乐");
+                break;
+            default:
+        }
     }
 
     @Override
@@ -54,6 +60,13 @@ public class OutboundClientHandler extends AbstractOutboundClientHandler {
         } else {
             log.error("Call hangup failed: [{}}", response.getHeaderValue(EslHeaders.Name.REPLY_TEXT));
         }
+    }
 
+    private void printHeader(EslEvent event) {
+        log.info("=======================  incoming channel data  =============================");
+        event.getEventHeaders().forEach((k, v) -> {
+            log.debug("{} -> {}", k, v);
+        });
+        log.info("=======================  = = = = = = = = = = =  =============================");
     }
 }
