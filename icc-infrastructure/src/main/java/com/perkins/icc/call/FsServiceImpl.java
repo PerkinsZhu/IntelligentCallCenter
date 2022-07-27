@@ -53,7 +53,7 @@ public class FsServiceImpl implements FsService {
     }
 
     @Override
-    public SingleResponse callOut(String agentNo) {
+    public SingleResponse<String> callOut(String phone) {
         FsCallCmd cmd = FsCallCmd.builder()
                 .command("originate")
                 .args("user/" + "1009" + " &park")

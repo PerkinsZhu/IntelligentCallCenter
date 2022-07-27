@@ -9,4 +9,6 @@ import java.util.Optional;
  **/
 public interface AgentService {
     Optional<Agent> findNextAgent();
+
+    Integer getCountByState(String status);
 }

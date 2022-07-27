@@ -13,7 +13,7 @@ public interface FsService {
     Response simpleCall(FsCallCmd dto);
     SingleResponse<String> callOut(FsCallCmd dto);
 
-    SingleResponse callOut(String agentNo);
+    SingleResponse<String> callOut(String agentNo);
 
     SingleResponse uuidBridge(String a_leg_uuid, String b_leg_uuid);
 }

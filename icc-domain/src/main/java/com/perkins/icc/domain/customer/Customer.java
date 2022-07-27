@@ -16,6 +16,7 @@ public class Customer{
     private String companyName;
     private SourceType sourceType;
     private CompanyType companyType;
+    private String phone;
 
     public Customer() {
     }

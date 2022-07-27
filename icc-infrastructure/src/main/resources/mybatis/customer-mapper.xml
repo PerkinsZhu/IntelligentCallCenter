@@ -6,6 +6,9 @@
     <select id="getById" resultType="com.perkins.icc.customer.CustomerDO">
         select * from customer where customer_id = #{id}
     </select>
+    <select id="list" resultType="com.perkins.icc.dto.data.CustomerDTO">
+        select * from customer limit 10;
+    </select>
     <resultMap type="com.perkins.icc.customer.CustomerDO" id="customerMap">
          <result property="customerId" column="emp_no"/>
          <result property="memberId" column="salary"/>

@@ -35,4 +35,10 @@ public class AgentServiceImpl implements AgentService {
         agent.setNo(list.get(0));
         return Optional.of(agent);
     }
+
+    @Override
+    public Integer getCountByState(String status) {
+        //TODO 从 redis 中查询出该状态的坐席数量
+        return 10;
+    }
 }

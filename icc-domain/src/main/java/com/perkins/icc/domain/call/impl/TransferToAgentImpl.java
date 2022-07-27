@@ -6,9 +6,12 @@ import com.perkins.icc.domain.agents.Agent;
 import com.perkins.icc.domain.agents.AgentService;
 import com.perkins.icc.domain.call.FsService;
 import com.perkins.icc.domain.call.TransferToAgent;
+import com.perkins.icc.domain.customer.Customer;
+import com.perkins.icc.dto.data.CustomerDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
@@ -29,7 +32,7 @@ public class TransferToAgentImpl implements TransferToAgent {
     AgentService agentService;
 
     @Override
-    public Response transfer(String a_leg_uuid) {
+    public Response transfer(CustomerDTO customer) {
         //TODO 这里修改为从空闲坐席队列中根据策略获取出转接的坐席
         //TODO 尝试如何使用策略引擎来选取坐席
         /**
@@ -47,9 +50,33 @@ public class TransferToAgentImpl implements TransferToAgent {
             return Response.buildFailure("500", "无可用空闲坐席");
         }
         //如果获取到agent，客户断掉了，此时应该重新把该agent放回等待队列
-        SingleResponse rs = fsService.callOut(agent.get().getNo());
-        String b_leg_uuid = rs.getData().toString();
-        SingleResponse bridge = fsService.uuidBridge(a_leg_uuid, b_leg_uuid);
+        SingleResponse<String> customerResponse = fsService.callOut(customer.getPhone());
+        if (!customerResponse.isSuccess()) {
+            log.info("客户未打通，接入重试策略重试");
+            //TODO 进入重试策略
+            return null;
+        }
+        String customerUUID = customerResponse.getData();
+
+
+        SingleResponse<String> agentResponse = fsService.callOut(agent.get().getNo());
+        /**
+         * TODO 如果坐席未接通，则记录该坐席未接通的数量，可用来考量坐席的工作情况。继续寻找下一个可接通坐席
+         * 如果一直 无可用坐席，则给客户播放提前准备好的录音
+         */
+        if (!agentResponse.isSuccess()) {
+            //TODO 播放录音
+            return null;
+        }
+        String agentUUID = agentResponse.getData();
+
+
+        SingleResponse bridgeResponse = fsService.uuidBridge(customerUUID, agentUUID);
+        if(!bridgeResponse.isSuccess()){
+            //TODO 记录bridge 失败原因
+        }
+        //TODO 标记该名单已被接通
+
         return null;
     }
 }

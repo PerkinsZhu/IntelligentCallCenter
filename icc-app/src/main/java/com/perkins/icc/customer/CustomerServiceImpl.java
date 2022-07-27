@@ -4,8 +4,10 @@ import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.catchlog.CatchAndLog;
 import com.perkins.icc.api.CustomerServiceI;
+import com.perkins.icc.customer.executor.query.CustomerListQryExe;
 import com.perkins.icc.dto.CustomerAddCmd;
 import com.perkins.icc.dto.CustomerListByNameQry;
+import com.perkins.icc.dto.CustomerListQry;
 import com.perkins.icc.dto.data.CustomerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,8 @@ public class CustomerServiceImpl implements CustomerServiceI {
 
     @Resource
     private CustomerListByNameQryExe customerListByNameQryExe;
+    @Resource
+    private CustomerListQryExe customerListQryExe;
 
     @Override
     public Response addCustomer(CustomerAddCmd customerAddCmd) {
@@ -34,6 +38,11 @@ public class CustomerServiceImpl implements CustomerServiceI {
     @Override
     public MultiResponse<CustomerDTO> listByName(CustomerListByNameQry customerListByNameQry) {
         return customerListByNameQryExe.execute(customerListByNameQry);
+    }
+
+    @Override
+    public MultiResponse<CustomerDTO> list(CustomerListQry customerListQry) {
+        return customerListQryExe.execute(customerListQry);
     }
 
 }
