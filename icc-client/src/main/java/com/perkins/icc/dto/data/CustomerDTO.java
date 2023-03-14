@@ -6,8 +6,9 @@ import javax.validation.constraints.NotEmpty;
 
 @Data
 public class CustomerDTO {
-    private String customerId;
-    private String memberId;
+    private Long id;
+    private Long customerId;
+    private Long memberId;
     private String customerName;
     private String customerType;
     @NotEmpty

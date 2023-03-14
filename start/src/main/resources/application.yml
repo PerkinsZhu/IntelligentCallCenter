@@ -5,3 +5,5 @@ server:
 spring:
   profiles:
     active: dev
+mybatis:
+  mapper-locations: classpath:mybatis/**/*.xml
