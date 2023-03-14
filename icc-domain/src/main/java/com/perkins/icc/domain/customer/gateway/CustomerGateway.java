@@ -7,7 +7,7 @@ import com.perkins.icc.dto.data.CustomerDTO;
 import java.util.List;
 
 public interface CustomerGateway {
-    public Customer getByById(String customerId);
+    Customer getByById(String customerId);
 
     List<CustomerDTO> list(CustomerListQry query);
 }
