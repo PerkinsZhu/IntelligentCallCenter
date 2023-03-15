@@ -23,7 +23,7 @@ class OutboundClientHandler extends AbstractOutboundClientHandler {
 
   override def handleConnectResponse(channelHandlerContext: ChannelHandlerContext, eslEvent: EslEvent): Unit = {
     log.info("Received connect response [{}]", eslEvent)
-    printHeader(eslEvent)
+//    printHeader(eslEvent)
     /**
      * 见 https://www.cnblogs.com/yjmyzz/p/freeswitch-esl-java-client-turorial.html
      *
@@ -66,7 +66,7 @@ class OutboundClientHandler extends AbstractOutboundClientHandler {
     sendMsg.addEventLock()
 
     val response = this.sendSyncMultiLineCommand(channel, sendMsg.getMsgLines)
-    response.getHeaders.forEach((k, v) => log.info("{}-->{}", k, v))
+//    response.getHeaders.forEach((k, v) => log.info("{}-->{}", k, v))
     if (response.getHeaderValue(EslHeaders.Name.REPLY_TEXT).startsWith("+OK")) {
       log.info("sendMsg {} successful", appName)
     } else {

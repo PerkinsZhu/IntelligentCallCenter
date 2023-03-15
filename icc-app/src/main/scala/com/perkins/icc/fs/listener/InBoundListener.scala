@@ -26,7 +26,7 @@ class InBoundListener(@Autowired val cacheService: CacheService) extends IEslEve
 
   override def eventReceived(eslEvent: EslEvent): Unit = {
     //接受阻塞类事件
-    log.info("Event received [{}]", eslEvent)
+//    log.info("Event received [{}]", eslEvent)
   }
 
   override def backgroundJobResultReceived(eslEvent: EslEvent): Unit = {
