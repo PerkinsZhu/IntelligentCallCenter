@@ -11,9 +11,13 @@ import com.perkins.icc.dto.fs.FsCallCmd;
  **/
 public interface FsService {
     Response simpleCall(FsCallCmd dto);
+
     SingleResponse<String> callOut(FsCallCmd dto);
 
-    SingleResponse<String> callOut(String agentNo);
+    SingleResponse<String> callOut(String phone);
+
+    SingleResponse<String> callOutAgent(String agentNo);
+
 
     SingleResponse uuidBridge(String a_leg_uuid, String b_leg_uuid);
 }

@@ -42,8 +42,9 @@ public class TransferToAgentImpl implements TransferToAgent {
          * 这样有不用阻塞线程一直等待着坐席接通，
          * 阻塞等待坐席接通会导致每个坐席就耗费一个线程
          */
-
-        Optional<Agent> agent = agentService.findNextAgent();
+        //DOTO 把空闲坐席放入redis
+//        Optional<Agent> agent = agentService.findNextAgent();
+        Optional<Agent> agent = Optional.of(new Agent("1010", "TEST", "127.0.0.1"));
         if (!agent.isPresent()) {
             log.warn("没有可用空闲坐席");
             //按照呼损处理
@@ -59,7 +60,7 @@ public class TransferToAgentImpl implements TransferToAgent {
         String customerUUID = customerResponse.getData();
 
 
-        SingleResponse<String> agentResponse = fsService.callOut(agent.get().getNo());
+        SingleResponse<String> agentResponse = fsService.callOutAgent(agent.get().getNo());
         /**
          * TODO 如果坐席未接通，则记录该坐席未接通的数量，可用来考量坐席的工作情况。继续寻找下一个可接通坐席
          * 如果一直 无可用坐席，则给客户播放提前准备好的录音
@@ -72,7 +73,7 @@ public class TransferToAgentImpl implements TransferToAgent {
 
 
         SingleResponse bridgeResponse = fsService.uuidBridge(customerUUID, agentUUID);
-        if(!bridgeResponse.isSuccess()){
+        if (!bridgeResponse.isSuccess()) {
             //TODO 记录bridge 失败原因
         }
         //TODO 标记该名单已被接通

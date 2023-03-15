@@ -57,7 +57,7 @@ public class CallJob implements ApplicationRunner {
         List<Long> tenantList = new ArrayList();
         tenantList.add(1001L);
         tenantList.forEach(i -> {
-            new JobHandle(i).start();
+//            new JobHandle(i).start();
         });
     }
 

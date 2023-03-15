@@ -22,7 +22,6 @@ public class FsServiceImpl implements FsService {
     @Autowired
     private Client fsClient;
 
-
     @Override
     public Response simpleCall(FsCallCmd dto) {
         log.info("execute fs cmd:{} {}", dto);
@@ -56,10 +55,20 @@ public class FsServiceImpl implements FsService {
     public SingleResponse<String> callOut(String phone) {
         FsCallCmd cmd = FsCallCmd.builder()
                 .command("originate")
-                .args("user/" + "1009" + " &park")
+                .args("{origination_caller_id_number=10080001}sofia/gateway/sbc_gw/9" + phone + " &park")
                 .build();
         return callOut(cmd);
     }
+
+    @Override
+    public SingleResponse<String> callOutAgent(String agentNo) {
+        FsCallCmd cmd = FsCallCmd.builder()
+                .command("originate")
+                .args("user/" + agentNo + " &park")
+                .build();
+        return callOut(cmd);
+    }
+
 
     @Override
     public SingleResponse uuidBridge(String a_leg_uuid, String b_leg_uuid) {
