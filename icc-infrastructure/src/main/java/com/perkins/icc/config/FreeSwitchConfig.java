@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author: perkins Zhu
  * @date: 2021/8/1 18:06
@@ -39,7 +43,6 @@ public class FreeSwitchConfig {
 //        client.addEventFilter("Caller-Caller-ID-Name","760141");
 //        client.addEventFilter("Caller-Caller-ID-Name","10101");
 
-
         log.info("Client connecting ..");
         try {
             client.connect(fsHost, fsPort, fsPassword, 2);
@@ -53,6 +56,24 @@ public class FreeSwitchConfig {
 //        client.setEventSubscriptions("plain", "all");
         String event = "CHANNEL_ANSWER CHANNEL_APPLICATION CHANNEL_BRIDGE CHANNEL_CALLSTATE CHANNEL_CREATE CHANNEL_DATA CHANNEL_DESTROY CHANNEL_EXECUTE CHANNEL_EXECUTE_COMPLETE CHANNEL_GLOBAL CHANNEL_HANGUP CHANNEL_HANGUP_COMPLETE CHANNEL_HOLD CHANNEL_ORIGINATE CHANNEL_OUTGOING CHANNEL_PARK CHANNEL_PROGRESS CHANNEL_PROGRESS_MEDIA CHANNEL_STATE CHANNEL_UNBRIDGE CHANNEL_UNHOLD CHANNEL_UNPARK CHANNEL_UUID";
         client.setEventSubscriptions("plain", event);
+
+
+        //单独起1个线程，定时检测连接状态
+        ScheduledExecutorService service = new ScheduledThreadPoolExecutor(1);
+        service.scheduleAtFixedRate(() -> {
+            System.out.println(System.currentTimeMillis() + " " + client.canSend());
+            if (!client.canSend()) {
+                try {
+                    //重连
+                    client.connect(fsHost, fsPort, fsPassword, 0);
+                    client.cancelEventSubscriptions();
+                    client.setEventSubscriptions("plain", "all");
+                } catch (Exception e) {
+                    log.error("connect fail", e);
+                }
+            }
+        }, 10, 10, TimeUnit.SECONDS);
+
         return client;
     }
 
@@ -60,10 +81,11 @@ public class FreeSwitchConfig {
      * 启动外联服务
      *
      * <extension name="outBoundTest">
-     *   <condition field="destination_number" expression="76014">
-     *     <action application="socket" data="serverIp:port async full"/>
-     *   </condition>
+     * <condition field="destination_number" expression="76014">
+     * <action application="socket" data="serverIp:port async full"/>
+     * </condition>
      * </extension>
+     *
      * @return
      */
     @Bean
@@ -71,7 +93,7 @@ public class FreeSwitchConfig {
 
         SocketClient socketClient = null;
         try {
-            socketClient = new SocketClient(8022, new AbstractOutboundPipelineFactory(){
+            socketClient = new SocketClient(8022, new AbstractOutboundPipelineFactory() {
                 @Override
                 protected AbstractOutboundClientHandler makeHandler() {
                     return outboundClientHandler;
