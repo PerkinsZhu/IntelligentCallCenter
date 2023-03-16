@@ -11,9 +11,15 @@ import java.util.List;
  * @description:
  **/
 public interface CacheService {
-    public Response execute(RedisCmd cmd);
+    public Boolean addToQueue(RedisCmd cmd);
 
-    public <T> List<T> getQueue(RedisCmd cmd);
+    public <T> List<T> getFromQueue(RedisCmd cmd);
+
+    public <T> Boolean removeFromQueue(RedisCmd cmd);
 
     public <T> T getSortedSet(RedisCmd cmd);
+
+    public <T> T getValue(RedisCmd<T> cmd);
+
+    public <T> Boolean setValue(RedisCmd<T> cmd);
 }

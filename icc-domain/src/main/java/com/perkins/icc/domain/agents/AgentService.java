@@ -10,5 +10,12 @@ import java.util.Optional;
 public interface AgentService {
     Optional<Agent> findNextAgent();
 
+    Boolean addReadyAgent(String value);
+
+    Boolean removeReadyAgent(String value);
+
     Integer getCountByState(String status);
+
+    Boolean register(AgentStatus map);
+
 }

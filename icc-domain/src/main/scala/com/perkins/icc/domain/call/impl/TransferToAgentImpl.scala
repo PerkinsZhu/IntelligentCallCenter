@@ -25,6 +25,7 @@ class TransferToAgentImpl(@Autowired fsService: FsService, @Autowired agentServi
   override def transfer(customer: CustomerDTO): Response = {
     //TODO 这里修改为从空闲坐席队列中根据策略获取出转接的坐席
     //TODO 尝试如何使用策略引擎来选取坐席
+    //TODO 是先打座席还是先打客户？如何避免座席被其他任务占用？
     /**
      * TODO
      * 坐席十秒内未接则切换为其他坐席
@@ -32,9 +33,8 @@ class TransferToAgentImpl(@Autowired fsService: FsService, @Autowired agentServi
      * 这样有不用阻塞线程一直等待着坐席接通，
      * 阻塞等待坐席接通会导致每个坐席就耗费一个线程
      */
-    //DOTO 把空闲坐席放入redis
-    //        Optional<Agent> agent = agentService.findNextAgent();
-    val agent: Optional[Agent] = Optional.of(new Agent("1010", "TEST", "127.0.0.1"))
+    //获取空闲座席
+    val agent = agentService.findNextAgent();
     if (!agent.isPresent) {
       log.warn("没有可用空闲坐席")
       //按照呼损处理
@@ -60,14 +60,14 @@ class TransferToAgentImpl(@Autowired fsService: FsService, @Autowired agentServi
     if (!agentResponse.isSuccess) { //TODO 播放录音
       return null
     }
-
     val agentUUID: String = agentResponse.getData
     log.info("agentUUID:{}", agentUUID)
 
     val bridgeResponse: SingleResponse[_] = fsService.uuidBridge(customerUUID, agentUUID)
     if (!bridgeResponse.isSuccess) {
-      //TODO 记录bridge 失败原因
+      log.warn("bridge failed.response:{}", bridgeResponse)
     }
+
     //TODO 标记该名单已被接通
 
     return null
