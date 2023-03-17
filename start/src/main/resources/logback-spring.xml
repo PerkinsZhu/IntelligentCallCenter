@@ -46,6 +46,4 @@
     <logger name="com.apache.ibatis" level="TRACE" additivity="false">
         <appender-ref ref="CONSOLE"/>
     </logger>
-    <logger name="org.freeswitch.esl.client.transport.message.EslFrameDecoder" level="WARN"></logger>
-    <logger name="o.f.esl.client.transport.message.EslFrameDecoder" level="WARN"></logger>
 </configuration>

@@ -9,7 +9,7 @@ mybatis:
   mapper-locations: classpath:mybatis/**/*.xml
 
 logging:
-  config: classpath:logback.xml
+  config: classpath:logback-spring.xml
   level:
     com:
       springboot: info
