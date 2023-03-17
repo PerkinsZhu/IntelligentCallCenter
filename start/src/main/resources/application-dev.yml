@@ -11,9 +11,13 @@ spring:
     username: root
     password: root
 fs:
-  host: 127.0.0.1
-  port: 8021
-  password: ClueCon
+  remote:
+    host: 127.0.0.1
+    port: 8021
+    password: ClueCon
+  local:
+    host: 127.0.0.1
+    port: 8022
 
 job:
   enabled: true
