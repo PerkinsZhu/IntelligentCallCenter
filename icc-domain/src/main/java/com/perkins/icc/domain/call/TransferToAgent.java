@@ -10,4 +10,5 @@ import com.perkins.icc.dto.data.CustomerDTO;
  **/
 public interface TransferToAgent {
     Response transfer(CustomerDTO customer);
+    Response hangUp(CustomerDTO customer);
 }

@@ -1,17 +1,22 @@
 package com.perkins.icc.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.freeswitch.esl.client.IEslEventListener;
+import org.freeswitch.esl.client.dptools.Execute;
+import org.freeswitch.esl.client.dptools.ExecuteException;
 import org.freeswitch.esl.client.inbound.Client;
+import org.freeswitch.esl.client.inbound.IEslEventListener;
 import org.freeswitch.esl.client.inbound.InboundConnectionFailure;
-import org.freeswitch.esl.client.outbound.AbstractOutboundClientHandler;
-import org.freeswitch.esl.client.outbound.AbstractOutboundPipelineFactory;
+import org.freeswitch.esl.client.internal.Context;
+import org.freeswitch.esl.client.internal.IModEslApi;
+import org.freeswitch.esl.client.outbound.IClientHandler;
 import org.freeswitch.esl.client.outbound.SocketClient;
+import org.freeswitch.esl.client.transport.event.EslEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.net.InetSocketAddress;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -24,28 +29,31 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Configuration
 public class FreeSwitchConfig {
-    @Value("${fs.host}")
+    @Value("${fs.remote.host}")
     private String fsHost;
-    @Value("${fs.port}")
+    @Value("${fs.remote.port}")
     private Integer fsPort;
-    @Value("${fs.password}")
+    @Value("${fs.remote.password}")
     private String fsPassword;
+
+    @Value("${fs.local.host}")
+    private String localHost;
+    @Value("${fs.local.port}")
+    private Integer localPort;
 
     @Autowired
     IEslEventListener inBoundListener;
+
     @Autowired
-    AbstractOutboundClientHandler outboundClientHandler;
+    IClientHandler outboundClientHandler;
 
     @Bean
     public Client fsClient() {
         Client client = new Client();
         client.addEventListener(inBoundListener);
-//        client.addEventFilter("Caller-Caller-ID-Name","760141");
-//        client.addEventFilter("Caller-Caller-ID-Name","10101");
-
         log.info("Client connecting ..");
         try {
-            client.connect(fsHost, fsPort, fsPassword, 2);
+            client.connect(new InetSocketAddress(fsHost, fsPort), fsPassword, 2);
         } catch (InboundConnectionFailure e) {
             log.error("Connect failed", e);
             return null;
@@ -53,10 +61,7 @@ public class FreeSwitchConfig {
         log.info("Client connected ..");
 
 
-        client.setEventSubscriptions("plain", "all");
-//        String event = "CHANNEL_ANSWER CHANNEL_APPLICATION CHANNEL_BRIDGE CHANNEL_CALLSTATE CHANNEL_CREATE CHANNEL_DATA CHANNEL_DESTROY CHANNEL_EXECUTE CHANNEL_EXECUTE_COMPLETE CHANNEL_GLOBAL CHANNEL_HANGUP CHANNEL_HANGUP_COMPLETE CHANNEL_HOLD CHANNEL_ORIGINATE CHANNEL_OUTGOING CHANNEL_PARK CHANNEL_PROGRESS CHANNEL_PROGRESS_MEDIA CHANNEL_STATE CHANNEL_UNBRIDGE CHANNEL_UNHOLD CHANNEL_UNPARK CHANNEL_UUID";
-//        client.setEventSubscriptions("plain", event);
-
+        client.setEventSubscriptions(IModEslApi.EventFormat.PLAIN, "all");
 
         //单独起1个线程，定时检测连接状态
         ScheduledExecutorService service = new ScheduledThreadPoolExecutor(1);
@@ -65,15 +70,14 @@ public class FreeSwitchConfig {
             if (!client.canSend()) {
                 try {
                     //重连
-                    client.connect(fsHost, fsPort, fsPassword, 0);
+                    client.connect(new InetSocketAddress(fsHost, fsPort), fsPassword, 2);
                     client.cancelEventSubscriptions();
-                    client.setEventSubscriptions("plain", "all");
+                    client.setEventSubscriptions(IModEslApi.EventFormat.PLAIN, "all");
                 } catch (Exception e) {
                     log.error("connect fail", e);
                 }
             }
         }, 10, 10, TimeUnit.SECONDS);
-
         return client;
     }
 
@@ -90,16 +94,10 @@ public class FreeSwitchConfig {
      */
     @Bean
     public SocketClient socketClient() {
-
         SocketClient socketClient = null;
         try {
-            socketClient = new SocketClient(8022, new AbstractOutboundPipelineFactory() {
-                @Override
-                protected AbstractOutboundClientHandler makeHandler() {
-                    return outboundClientHandler;
-                }
-            });
-            socketClient.start();
+            socketClient = new SocketClient(new InetSocketAddress(localHost, localPort), () -> outboundClientHandler);
+            socketClient.startAsync();
         } catch (Exception e) {
             log.error("outBound failed", e);
         }

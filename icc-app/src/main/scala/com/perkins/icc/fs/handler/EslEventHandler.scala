@@ -26,7 +26,6 @@ class EslEventHandler(@Autowired agentService: AgentService) extends BaseDepends
     val eventSubclass = headerValue("Event-Subclass")
     log.info("header:{}", eslEvent.getEventHeaders)
 
-
     eventSubclass match {
       case EventConstant.ESL_EVENT_SUBCLASS_NAME_SOFIA_REGISTER => {
         val result = agentService.addReadyAgent(fromUser)
@@ -38,8 +37,6 @@ class EslEventHandler(@Autowired agentService: AgentService) extends BaseDepends
       }
       case _ =>
     }
-
-
   }
 
   def handle(implicit eslEvent: EslEvent): Unit = {

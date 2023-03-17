@@ -51,7 +51,7 @@ class TransferToAgentImpl(@Autowired fsService: FsService, @Autowired agentServi
     val customerUUID: String = customerResponse.getData
     log.info("customerUUID:{}", customerUUID)
 
-    val agentResponse: SingleResponse[String] = fsService.callOutAgent(agent.get.getNo)
+    val agentResponse: SingleResponse[String] = fsService.callOutAgent(agent.get().no)
 
     /**
      * TODO 如果坐席未接通，则记录该坐席未接通的数量，可用来考量坐席的工作情况。继续寻找下一个可接通坐席
@@ -71,5 +71,10 @@ class TransferToAgentImpl(@Autowired fsService: FsService, @Autowired agentServi
     //TODO 标记该名单已被接通
 
     return null
+  }
+
+  override def hangUp(customer: CustomerDTO): Response = {
+
+    null
   }
 }

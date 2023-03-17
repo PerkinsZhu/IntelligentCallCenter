@@ -21,27 +21,19 @@ import java.util.Optional
 class AgentServiceImpl(@Autowired val cacheService: CacheService = null) extends AgentService {
 
   override def findNextAgent: Optional[Agent] = {
-    val cmd = RedisCmd.builder.key(Constant.r_available_agent_queue_key).limit(1).build
-    val list = cacheService.getFromQueue(cmd)
+    val cmd = RedisCmd[String](Constant.r_available_agent_queue_key, null)
+    val list = cacheService.getFromQueue[String](cmd)
     if (list.isEmpty) return Optional.empty
-    val agent = new Agent
-    agent.setNo(list.get(0))
+    val agent = Agent(list.get(0), null, null)
     Optional.of(agent)
   }
 
   override def addReadyAgent(value: String): lang.Boolean = {
-    cacheService.addToQueue(RedisCmd.builder[String]
-      .key(Constant.r_available_agent_queue_key)
-      .value(value)
-      .build())
+    cacheService.addToQueue(RedisCmd(Constant.r_available_agent_queue_key, value))
   }
 
   override def removeReadyAgent(value: String): lang.Boolean = {
-    cacheService.removeFromQueue(RedisCmd.builder[String]
-      .key(Constant.r_available_agent_queue_key)
-      .value(value)
-      .isPop(true)
-      .build())
+    cacheService.removeFromQueue[String](RedisCmd[String](Constant.r_available_agent_queue_key, value, isPop = true))
   }
 
 
@@ -51,10 +43,7 @@ class AgentServiceImpl(@Autowired val cacheService: CacheService = null) extends
   }
 
   override def register(agentStatus: AgentStatus): lang.Boolean = {
-    cacheService.addToQueue(RedisCmd.builder[AgentStatus]
-      .key(Constant.r_available_agent_queue_key)
-      .value(agentStatus)
-      .build());
+    cacheService.addToQueue(RedisCmd(Constant.r_available_agent_queue_key, agentStatus));
     false
   }
 }

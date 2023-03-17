@@ -11,13 +11,13 @@ import java.util.List;
  * @description:
  **/
 public interface CacheService {
-    public Boolean addToQueue(RedisCmd cmd);
+    public <T> Boolean addToQueue(RedisCmd<T> cmd);
 
-    public <T> List<T> getFromQueue(RedisCmd cmd);
+    public <T> List<T> getFromQueue(RedisCmd<T> cmd);
 
-    public <T> Boolean removeFromQueue(RedisCmd cmd);
+    public <T> Boolean removeFromQueue(RedisCmd<T> cmd);
 
-    public <T> T getSortedSet(RedisCmd cmd);
+    public <T> T getSortedSet(RedisCmd<T> cmd);
 
     public <T> T getValue(RedisCmd<T> cmd);
 

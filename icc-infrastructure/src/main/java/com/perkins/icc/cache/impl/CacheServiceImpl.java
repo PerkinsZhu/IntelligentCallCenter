@@ -33,40 +33,40 @@ public class CacheServiceImpl implements CacheService {
     @Override
     public Boolean addToQueue(RedisCmd cmd) {
         RQueue<Object> queue = redissonClient
-                .getQueue(getKey(cmd.getKey()), TypedJsonJacksonCodec.INSTANCE);
-        return queue.add(cmd.getValue());
+                .getQueue(getKey(cmd.key()), TypedJsonJacksonCodec.INSTANCE);
+        return queue.add(cmd.value());
     }
 
 
     @Override
-    public <T> List<T> getFromQueue(RedisCmd cmd) {
-        RQueue<T> rQueue = redissonClient.getQueue(getKey(cmd.getKey()), JsonJacksonCodec.INSTANCE);
-        return rQueue.poll(cmd.getLimit());
+    public <T> List<T> getFromQueue(RedisCmd<T> cmd) {
+        RQueue<T> rQueue = redissonClient.getQueue(getKey(cmd.key()), JsonJacksonCodec.INSTANCE);
+        return rQueue.poll(cmd.limit());
     }
 
     @Override
-    public <T> Boolean removeFromQueue(RedisCmd cmd) {
-        RQueue<T> rQueue = redissonClient.getQueue(getKey(cmd.getKey()), JsonJacksonCodec.INSTANCE);
-        return rQueue.remove(cmd.getValue());
+    public <T> Boolean removeFromQueue(RedisCmd<T> cmd) {
+        RQueue<T> rQueue = redissonClient.getQueue(getKey(cmd.key()), JsonJacksonCodec.INSTANCE);
+        return rQueue.remove(cmd.value());
     }
 
 
     @Override
-    public <T> T getSortedSet(RedisCmd cmd) {
-        RSortedSet<T> sortedSet = redissonClient.getSortedSet(getKey(cmd.getKey()), JsonJacksonCodec.INSTANCE);
+    public <T> T getSortedSet(RedisCmd<T> cmd) {
+        RSortedSet<T> sortedSet = redissonClient.getSortedSet(getKey(cmd.key()), JsonJacksonCodec.INSTANCE);
         return sortedSet.first();
     }
 
     @Override
     public <T> T getValue(RedisCmd<T> cmd) {
-        RBucket<T> rBucket = redissonClient.getBucket(getKey(cmd.getKey()), JsonJacksonCodec.INSTANCE);
+        RBucket<T> rBucket = redissonClient.getBucket(getKey(cmd.key()), JsonJacksonCodec.INSTANCE);
         return rBucket.get();
     }
 
     @Override
     public <T> Boolean setValue(RedisCmd<T> cmd) {
-        RBucket<T> rBucket = redissonClient.getBucket(getKey(cmd.getKey()), JsonJacksonCodec.INSTANCE);
-        rBucket.set(cmd.getValue());
+        RBucket<T> rBucket = redissonClient.getBucket(getKey(cmd.key()), JsonJacksonCodec.INSTANCE);
+        rBucket.set(cmd.value());
         return Boolean.TRUE;
     }
 

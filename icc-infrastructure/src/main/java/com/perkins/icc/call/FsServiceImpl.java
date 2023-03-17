@@ -25,7 +25,7 @@ public class FsServiceImpl implements FsService {
     @Override
     public Response simpleCall(FsCallCmd dto) {
         log.info("execute fs cmd:{} {}", dto);
-        EslMessage response = fsClient.sendSyncApiCommand(dto.getCommand(), dto.getArgs());
+        EslMessage response = fsClient.sendApiCommand(dto.getCommand(), dto.getArgs());
         log.info("response:{}", response.getBodyLines());
         //呼叫成功返回 uuid ,呼叫失败则返回原因
         return getResponse(response);
@@ -46,7 +46,7 @@ public class FsServiceImpl implements FsService {
     @Override
     public SingleResponse<String> callOut(FsCallCmd dto) {
         log.info("execute fs cmd:{}", dto);
-        EslMessage response = fsClient.sendSyncApiCommand(dto.getCommand(), dto.getArgs());
+        EslMessage response = fsClient.sendApiCommand(dto.getCommand(), dto.getArgs());
         log.info("response:{}", response.getBodyLines());
         return getResponse(response);
     }
