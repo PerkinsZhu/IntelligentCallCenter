@@ -37,7 +37,7 @@
 
     <!--应用日志-->
     <!--这个logger没有指定appender，它会继承root节点中定义的那些appender-->
-    <logger name="com.perkins.icc" level="DEBUG"/>
+    <logger name="com.perkins.icc" level="INFO"/>
 
     <!--数据库日志-->
     <!--由于这个logger自动继承了root的appender，root中已经有stdout的appender了，自己这边又引入了stdout的appender-->
@@ -46,4 +46,6 @@
     <logger name="com.apache.ibatis" level="TRACE" additivity="false">
         <appender-ref ref="CONSOLE"/>
     </logger>
+    <logger name="org.freeswitch.esl.client.transport.message.EslFrameDecoder" level="WARN"></logger>
+    <logger name="o.f.esl.client.transport.message.EslFrameDecoder" level="WARN"></logger>
 </configuration>

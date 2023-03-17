@@ -7,3 +7,11 @@ spring:
     active: dev
 mybatis:
   mapper-locations: classpath:mybatis/**/*.xml
+
+logging:
+  config: classpath:logback.xml
+  level:
+    com:
+      springboot: info
+    org:
+      freeswitch: info
