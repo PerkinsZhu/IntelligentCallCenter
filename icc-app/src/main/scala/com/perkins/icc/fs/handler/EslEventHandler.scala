@@ -44,7 +44,7 @@ class EslEventHandler(@Autowired agentService: AgentService) extends BaseDepends
 
     val result = eventName match {
       case EventConstant.ESL_EVENT_NAME_CUSTOM => handleCustomEvent(eslEvent)
-      case _ => log.info("receive event_name:{}", eventName)
+      case _ => //log.info("receive event_name:{}", eventName)
     }
 
   }
