@@ -2,12 +2,11 @@ package com.perkins.icc.fs.handler
 
 import com.perkins.icc.common.service.BaseDepends
 import lombok.extern.slf4j.Slf4j
-import org.freeswitch.esl.client.dptools.{Execute, ExecuteException}
+import org.freeswitch.esl.client.dptools.Execute
 import org.freeswitch.esl.client.internal.Context
 import org.freeswitch.esl.client.outbound.IClientHandler
-import org.freeswitch.esl.client.transport.{CommandResponse, SendMsg}
+import org.freeswitch.esl.client.transport.SendMsg
 import org.freeswitch.esl.client.transport.event.EslEvent
-import org.freeswitch.esl.client.transport.message.EslHeaders
 import org.springframework.stereotype.Component
 
 
