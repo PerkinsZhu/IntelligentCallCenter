@@ -21,16 +21,17 @@ import org.springframework.stereotype.Component
 class OutboundClientHandler extends BaseDepends with IClientHandler {
 
   def doAction(implicit context: Context, uuid: String): Unit = {
-    val exe = new Execute(context, uuid)
+//    val exe = new Execute(context, uuid)
     try {
 
       log.info("===============answer=============")
-      //      exe.answer()
+//            exe.answer()
+//      sendMsg("set", "hangup_after_bridge=true")
       sendMsg("bridge", "user/1008")
       log.info("===============answer end =============")
       //      exe.hangup()
 
-      //      exe.bridge("user/1008")
+//            exe.bridge("user/1008")
       //      exe.playback("/home/zpj/wav/123.wav")
       //      exe.playbackVolume(10)
       //      exe.displaceSession("/usr/local/freeswitch/sounds/music/8000/danza-espanola-op-37-h-142-xii-arabesca.wav")
@@ -38,7 +39,7 @@ class OutboundClientHandler extends BaseDepends with IClientHandler {
       case exception: Exception => log.error("============answer error ====", exception)
     } finally {
       log.info("===========answer finally=====")
-      exe.hangup("zpj")
+//      exe.hangup("zpj")
     }
 
   }
