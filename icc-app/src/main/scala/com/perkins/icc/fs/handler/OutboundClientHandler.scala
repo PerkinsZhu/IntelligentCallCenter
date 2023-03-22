@@ -1,6 +1,7 @@
 package com.perkins.icc.fs.handler
 
 import com.perkins.icc.common.service.BaseDepends
+import com.perkins.icc.freeswitch.ICCExecute
 import lombok.extern.slf4j.Slf4j
 import org.freeswitch.esl.client.dptools.Execute
 import org.freeswitch.esl.client.internal.Context
@@ -21,17 +22,18 @@ import org.springframework.stereotype.Component
 class OutboundClientHandler extends BaseDepends with IClientHandler {
 
   def doAction(implicit context: Context, uuid: String): Unit = {
-//    val exe = new Execute(context, uuid)
+    //    val exe = new ICCExecute(context, uuid)
+
     try {
 
       log.info("===============answer=============")
-//            exe.answer()
-//      sendMsg("set", "hangup_after_bridge=true")
+      //            exe.answer()
+      //      sendMsg("set", "hangup_after_bridge=true")
       sendMsg("bridge", "user/1008")
       log.info("===============answer end =============")
       //      exe.hangup()
 
-//            exe.bridge("user/1008")
+      //            exe.bridge("user/1008")
       //      exe.playback("/home/zpj/wav/123.wav")
       //      exe.playbackVolume(10)
       //      exe.displaceSession("/usr/local/freeswitch/sounds/music/8000/danza-espanola-op-37-h-142-xii-arabesca.wav")
@@ -39,16 +41,17 @@ class OutboundClientHandler extends BaseDepends with IClientHandler {
       case exception: Exception => log.error("============answer error ====", exception)
     } finally {
       log.info("===========answer finally=====")
-//      exe.hangup("zpj")
+      //      exe.hangup("zpj")
     }
 
   }
 
-  def sendMsg(app: String, args: String)(implicit context: Context): Unit = {
-    val msg = new SendMsg
+  def sendMsg(app: String, args: String)(implicit context: Context, uuid: String): Unit = {
+    val msg = new SendMsg(uuid)
     msg.addCallCommand("execute")
     msg.addExecuteAppName(app)
     msg.addExecuteAppArg(args)
+    context.canSend
     val resp = context.sendMessage(msg)
     if (!resp.isOk) {
       log.error("send msg error:{}", resp.getReplyText)
@@ -72,9 +75,9 @@ class OutboundClientHandler extends BaseDepends with IClientHandler {
     val taskType = eslEvent.getEventHeaders.getOrDefault("variable_taskType", "")
 
 
-    implicit val coreUUid = eslEvent.getMessageHeaders.getOrDefault("Core-UUID", "")
+    implicit val coreUUid = eslEvent.getEventHeaders.getOrDefault("Core-UUID", "")
     implicit val uuid = eslEvent.getMessageHeaders.getOrDefault("unique-id", "")
-
+//todo 确定是uuid还是coreUUID
     taskType match {
       case "playMusic" =>
         //转座席
@@ -82,7 +85,7 @@ class OutboundClientHandler extends BaseDepends with IClientHandler {
         //        send("execute", "playback", "/home/zpj/wav/123.wav")
         // 挂断电话
         //        send("execute", "hangup", null)
-        doAction(context, uuid)
+        doAction(context, coreUUid)
 
       case _ =>
     }
