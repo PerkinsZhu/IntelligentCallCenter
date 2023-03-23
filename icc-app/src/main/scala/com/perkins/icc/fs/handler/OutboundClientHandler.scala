@@ -43,17 +43,18 @@ class OutboundClientHandler extends AbstractOutboundClientHandler {
     implicit val channel = channelHandlerContext.getChannel
     //    implicit val coreId = eslEvent.getMessageHeaders.getOrDefault("Core-UUID", "")
     implicit val uuid = eslEvent.getEventHeaders.getOrDefault("Unique-ID", "")
-//    implicit val uuid = UUID.randomUUID().toString
 
     taskType match {
       case "playMusic" =>
         //转座席 需要设置b_leg挂断后hangup a_leg
-//                send("execute", "set", "hangup_after_bridge=true")
-//                send("execute", "bridge", "user/1008")
+        //                send("execute", "set", "hangup_after_bridge=true")
+        //                send("execute", "bridge", "user/1008")
 
-//                send("execute", "answer", "")
-//                send("execute", "loop_playback", "+2 /home/zpj/wav/123.wav")
-//        send("execute", "playback", "music/8000/suite-espanola-op-47-leyenda.wav")
+        //播放音频，需要先answer，之后再playback
+        send("execute", "answer", "")
+        //        send("execute", "loop_playback", "+2 /home/zpj/wav/123.wav")
+        send("execute", "playback", "/home/zpj/wav/123.wav")
+      //        send("execute", "playback", "sounds/music/8000/suite-espanola-op-47-leyenda.wav")
       // 挂断电话
       //        send("execute", "hangup", null)
       case _ =>
@@ -72,7 +73,7 @@ class OutboundClientHandler extends AbstractOutboundClientHandler {
     sendMsg.addExecuteAppName(appName)
     sendMsg.addExecuteAppArg(arg)
 
-//    sendMsg.addEventLock()
+    //    sendMsg.addEventLock()
 
     val response = this.sendSyncMultiLineCommand(channel, sendMsg.getMsgLines)
     if (response.getHeaderValue(EslHeaders.Name.REPLY_TEXT).startsWith("+OK")) {
