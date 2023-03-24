@@ -51,7 +51,8 @@ class EslEventHandler(@Autowired agentService: AgentService) extends BaseDepends
 
   def handle(implicit eslEvent: EslEvent): Unit = {
     val eventName = headerValue("Event-Name")
-    log.info("inbound receive message :{}", eventName)
+    val eventSubclass = headerValue("Event-Subclass")
+    log.info("inbound receive eventName:{},eventSubclass:{}", eventName, eventSubclass)
     val result = eventName match {
       case EventConstant.ESL_EVENT_NAME_CUSTOM => handleCustomEvent(eslEvent)
       case EventConstant.ESL_EVENT_CHANNEL_HANGUP_COMPLETE => handleHangupComplete(eslEvent)

@@ -50,6 +50,9 @@ class OutboundClientHandler extends AbstractOutboundClientHandler {
         //                send("execute", "set", "hangup_after_bridge=true")
         //                send("execute", "bridge", "user/1008")
 
+        //发送自定义事件
+        send("execute", "event", "Event-Subclass=icc::notify,Event-Name=CUSTOM,name=perkins,app=icc")
+
         //播放音频，需要先answer，之后再playback
         send("execute", "answer", "")
         //        send("execute", "loop_playback", "+2 /home/zpj/wav/123.wav")
