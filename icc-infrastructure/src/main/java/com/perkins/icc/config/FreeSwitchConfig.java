@@ -63,7 +63,7 @@ public class FreeSwitchConfig {
             if (!client.canSend()) {
                 try {
                     //重连
-                    client.connect(fsHost, fsPort, fsPassword, 0);
+                    client.connect(fsHost, fsPort, fsPassword, 10);
                     client.cancelEventSubscriptions();
                     client.setEventSubscriptions("plain", "all");
                 } catch (Exception e) {

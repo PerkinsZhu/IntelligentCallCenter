@@ -1,6 +1,7 @@
 package com.perkins.icc.fs.handler
 
 import com.perkins.icc.common.EventConstant
+import com.perkins.icc.common.EventConstant._
 import com.perkins.icc.common.service.BaseDepends
 import com.perkins.icc.domain.agents.AgentService
 import lombok.extern.log4j.Log4j
@@ -24,7 +25,7 @@ class EslEventHandler(@Autowired agentService: AgentService) extends BaseDepends
   def handleCustomEvent(implicit eslEvent: EslEvent) = {
     val fromUser = headerValue("from-user")
     val eventSubclass = headerValue("Event-Subclass")
-    log.info("header:{}", eslEvent.getEventHeaders)
+    //    log.info("header:{}", eslEvent.getEventHeaders)
 
     eventSubclass match {
       case EventConstant.ESL_EVENT_SUBCLASS_NAME_SOFIA_REGISTER => {
@@ -39,11 +40,21 @@ class EslEventHandler(@Autowired agentService: AgentService) extends BaseDepends
     }
   }
 
+  def handleHangupComplete(implicit eslEvent: EslEvent) = {
+    //TODO 通道关闭，通话结束，可以做一些善后事件
+    log.info("通话挂断.{}-->{},HangUpCause:{}",
+      headerValue(EVENT_KEY_CALLER_CALLER_ID_NUMBER),
+      headerValue(EVENT_KEY_CALLER_DESTINATION_NUMBER),
+      headerValue(EVENT_KEY_HANGUP_CAUSE)
+    )
+  }
+
   def handle(implicit eslEvent: EslEvent): Unit = {
     val eventName = headerValue("Event-Name")
-
+    log.info("inbound receive message :{}", eventName)
     val result = eventName match {
       case EventConstant.ESL_EVENT_NAME_CUSTOM => handleCustomEvent(eslEvent)
+      case EventConstant.ESL_EVENT_CHANNEL_HANGUP_COMPLETE => handleHangupComplete(eslEvent)
       case _ => //log.info("receive event_name:{}", eventName)
     }
 
