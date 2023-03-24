@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component
 
 import java.util.UUID
 import scala.jdk.CollectionConverters._
+import scala.tools.nsc.util.StringUtil
 
 
 /**
@@ -41,7 +42,7 @@ class OutboundClientHandler extends AbstractOutboundClientHandler {
     val taskType = eslEvent.getEventHeaders.getOrDefault("variable_taskType", "")
 
     implicit val channel = channelHandlerContext.getChannel
-    //    implicit val coreId = eslEvent.getMessageHeaders.getOrDefault("Core-UUID", "")
+    //implicit val coreId = eslEvent.getMessageHeaders.getOrDefault("Core-UUID", "")
     implicit val uuid = eslEvent.getEventHeaders.getOrDefault("Unique-ID", "")
 
     taskType match {
@@ -51,15 +52,27 @@ class OutboundClientHandler extends AbstractOutboundClientHandler {
         //                send("execute", "bridge", "user/1008")
 
         //发送自定义事件
-        send("execute", "event", "Event-Subclass=icc::notify,Event-Name=CUSTOM,name=perkins,app=icc")
+        //        send("execute", "event", "Event-Subclass=icc::notify,Event-Name=CUSTOM,name=perkins,app=icc")
 
         //播放音频，需要先answer，之后再playback
-        send("execute", "answer", "")
+        //        send("execute", "answer", "")
         //        send("execute", "loop_playback", "+2 /home/zpj/wav/123.wav")
-        send("execute", "playback", "/home/zpj/wav/123.wav")
-      //        send("execute", "playback", "sounds/music/8000/suite-espanola-op-47-leyenda.wav")
-      // 挂断电话
-      //        send("execute", "hangup", null)
+        //        send("execute", "playback", "/home/zpj/wav/123.wav")
+        //        send("execute", "playback", "sounds/music/8000/suite-espanola-op-47-leyenda.wav")
+        // 挂断电话
+        //        send("execute", "hangup", null)
+
+
+        send("execute", "answer", "")
+        send("execute", "play_and_get_digits", "0 9 1 10000 # /usr/local/freeswitch/sounds/replay.wav /usr/local/freeswitch/sounds/say_bye.wav dtmf_res \\d+")
+        val now = System.currentTimeMillis();
+        while ((System.currentTimeMillis() - now) < 10000) {
+          Thread.sleep(1000)
+          log.info("======sleep=============")
+        }
+
+        send("api", "uuid_getvar", uuid + " dtmf_res")
+//        send("execute", "hangup", null)
       case _ =>
     }
 
@@ -75,12 +88,12 @@ class OutboundClientHandler extends AbstractOutboundClientHandler {
     sendMsg.addCallCommand(command)
     sendMsg.addExecuteAppName(appName)
     sendMsg.addExecuteAppArg(arg)
-
-    //    sendMsg.addEventLock()
+    sendMsg.addEventLock()
 
     val response = this.sendSyncMultiLineCommand(channel, sendMsg.getMsgLines)
+
     if (response.getHeaderValue(EslHeaders.Name.REPLY_TEXT).startsWith("+OK")) {
-      log.info("sendMsg {} successful", appName)
+      log.info("sendMsg {} successful。bodyLine:{}", appName, response.getBodyLines)
     } else {
       log.error("sendMsg {} failed: {}", appName, response.getHeaders)
     }
@@ -93,6 +106,7 @@ class OutboundClientHandler extends AbstractOutboundClientHandler {
   }
 
   override def exceptionCaught(ctx: ChannelHandlerContext, e: ExceptionEvent) {
+    e.getCause.printStackTrace()
     log.error("exception caught:{}", e)
   }
 }
