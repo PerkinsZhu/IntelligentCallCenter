@@ -64,14 +64,16 @@ class OutboundClientHandler extends AbstractOutboundClientHandler {
 
 
         send("execute", "answer", "")
-        send("execute", "play_and_get_digits", "0 9 1 10000 # /usr/local/freeswitch/sounds/replay.wav /usr/local/freeswitch/sounds/say_bye.wav dtmf_res \\d+")
+//        send("execute", "play_and_get_digits", "0 9 1 10000 # /usr/local/freeswitch/sounds/replay.wav /usr/local/freeswitch/sounds/say_bye.wav dtmf_res \\d+")
+        send("execute", "play_and_get_digits", "1 1 1 3000 # say:'press one for technicial support' silence_stream://250 dtmf_res \\d+")
         val now = System.currentTimeMillis();
-        while ((System.currentTimeMillis() - now) < 10000) {
+        while ((System.currentTimeMillis() - now) < 11000) {
           Thread.sleep(1000)
           log.info("======sleep=============")
         }
 
         send("api", "uuid_getvar", uuid + " dtmf_res")
+
 //        send("execute", "hangup", null)
       case _ =>
     }

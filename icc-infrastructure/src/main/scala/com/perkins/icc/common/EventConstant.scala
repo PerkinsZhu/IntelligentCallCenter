@@ -22,4 +22,6 @@ object EventConstant {
   val EVENT_KEY_HANGUP_CAUSE = "Hangup-Cause";
   val EVENT_KEY_CALLER_CALLER_ID_NUMBER = "Caller-Caller-ID-Number";
   val EVENT_KEY_CALLER_DESTINATION_NUMBER = "Caller-Destination-Number";
+
+  val EVENT_APPLICATION_PLAY_AND_GET_DIGITS = "play_and_get_digits";
 }
